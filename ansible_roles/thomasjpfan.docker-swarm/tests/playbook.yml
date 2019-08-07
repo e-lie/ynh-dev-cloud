@@ -1,7 +1,0 @@
----
-
-- hosts: all
-  tasks:
-    - name: Run role
-      include_role:
-        name: role_to_test

@@ -1,8 +1,0 @@
----
-
-- hosts: all
-  become: true
-  tasks:
-    - name: Run role
-      include_role:
-        name: ansible-docker-swarm-role
