@@ -1,0 +1,3 @@
+docker_engine_main_user: root
+docker_engine_os: ubuntu
+docker_engine_os_version: bionic
