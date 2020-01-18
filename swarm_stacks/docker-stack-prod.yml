@@ -1,0 +1,36 @@
+version: '3'
+services:
+  identidock:
+    image: <votre_hub_login>/monster_icon:0.1 # ou tecpi pour récupérer la mienne
+    ports:
+      - "9090:9090"
+      - "9191:9191"
+    environment:
+      - CONTEXT=PROD
+    networks:
+      - identinet
+
+  dnmonster:
+    image: amouat/dnmonster:1.0
+    networks:
+      - identinet
+
+  redis:
+    image: redis
+    networks:
+      - identinet
+    volumes:
+      - identiredis_volume:/data
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8081:8081"
+    networks:
+      - identinet
+
+networks:
+  identinet:
+    driver: bridge
