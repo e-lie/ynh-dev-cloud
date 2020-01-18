@@ -1,6 +1,0 @@
-- name: "Provision Docker Swarm Cluster"
-  hosts: swarm_nodes
-
-  roles:
-    - role: docker-engine
-    - role: thomasjpfan.docker-swarm
