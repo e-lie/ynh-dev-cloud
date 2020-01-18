@@ -17,3 +17,8 @@ ansible-digital_ocean.cache
 *.tfstate.backup
 
 *.retry
+
+
+#ignore ansible roles
+geerlingguy.*
+thomasjpfan.*
