@@ -1,6 +1,14 @@
 - name: "Setup Docker Swarm"
   hosts: swarm_nodes
 
+  pre_tasks:
+    - apt:
+        name: python3-pip
+        update_cache: yes
+    - pip:
+        name: jsondiff
+        executable: pip3
+
   roles:
     - role: geerlingguy.docker
       vars:
