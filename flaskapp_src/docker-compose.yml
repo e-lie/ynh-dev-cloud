@@ -1,6 +1,6 @@
 version: '3'
 services:
-  identidock:
+  monster_icon:
     build: .
     ports:
       - "5000:5000"
@@ -9,18 +9,18 @@ services:
     volumes:
       - ./app:/app
     networks:
-      - identinet
+      - monster_network
 
   dnmonster:
     image: amouat/dnmonster:1.0
     networks:
-      - identinet
+      - monster_network
 
   redis:
     image: redis
     networks:
-      - identinet
+      - monster_network
 
 networks:
-  identinet:
+  monster_network:
     driver: bridge
