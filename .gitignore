@@ -22,3 +22,5 @@ ansible-digital_ocean.cache
 #ignore ansible roles
 geerlingguy.*
 thomasjpfan.*
+anmoel.*
+andrewrothstein.*
