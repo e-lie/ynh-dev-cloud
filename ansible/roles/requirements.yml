@@ -2,3 +2,5 @@
 - src: geerlingguy.docker
 - src: geerlingguy.pip
 - src: thomasjpfan.docker-swarm
+- src: anmoel.kubernetes
+- src: andrewrothstein.kubernetes-helm

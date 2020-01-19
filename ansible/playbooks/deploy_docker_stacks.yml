@@ -1,2 +1,13 @@
-- import_playbook: deploy_portainerstack.yml
-- import_playbook: deploy_monsterstack.yml
+- hosts: manager_0
+  roles:
+    - name: deploy_swarmstack
+      vars:
+        swarmstack_local_path: ../../swarm_stacks/
+        swarmstack_file: monster_icon_stack.yml
+        swarmstack_name: monsterstack
+
+    - name: deploy_swarmstack
+      vars:
+        swarmstack_local_path: ../../swarm_stacks/
+        swarmstack_file: portainer_stack.yml
+        swarmstack_name: portainerstack

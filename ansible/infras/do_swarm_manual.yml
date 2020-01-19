@@ -1,0 +1,1 @@
+- import_playbook: ../playbooks/swarm_nodes_setup.yml
