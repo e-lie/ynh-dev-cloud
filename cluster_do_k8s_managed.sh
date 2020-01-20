@@ -26,14 +26,13 @@ HEREDOC
 
 _setup_full() {
   _setup_terraform
-  _setup_ansible
-  _setup_dockerstack
+  # _setup_ansible
 }
 
 _setup_terraform() {
   printf "Setup Terraform resources\\n"
   printf "##############################################\\n"
-  cd "$PROJECT_DIR/$ANSIBLE_TF_DIR"
+  cd "$ANSIBLE_TF_DIR"
   terraform init
   terraform plan
   terraform apply -auto-approve 
@@ -50,7 +49,8 @@ _destroy_infra() {
 _main() {
   # Avoid complex option parsing when only one program option is expected.
   PROJECT_DIR=$(pwd)
-  ANSIBLE_TF_DIR=terraform/do_k8s_managed/
+  INFRA_NAME=do_k8s_managed
+  ANSIBLE_TF_DIR=$PROJECT_DIR/terraform/$INFRA_NAME # variable used by ansible terraform inventory to find terraform/
 
 
   if [[ "${1:-}" =~ ^-h|--help$  ]]
