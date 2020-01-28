@@ -1,0 +1,21 @@
+- name: "Install yunohost on remote server"
+  hosts: yunohost
+  remote_user: root
+  become: yes
+
+  roles:
+    - role: e-lie.yunohost
+      vars:
+        ynh_main_domain: dopl.uk
+        ynh_admin_password: trucmuch42
+
+        ynh_disable_fail2ban: yes
+
+        ynh_users:
+          - name: jdoe
+            pass: trucmuch42
+            firstname: John
+            lastname: Doe
+
+            # yo have to define an address based on one of the yunohost domains 
+            mail: jdoe@dopl.uk

@@ -1,15 +1,3 @@
-#!/usr/bin/env bash
-#       _                 _
-#   ___(_)_ __ ___  _ __ | | ___
-#  / __| | '_ ` _ \| '_ \| |/ _ \
-#  \__ \ | | | | | | |_) | |  __/
-#  |___/_|_| |_| |_| .__/|_|\___|
-#                  |_|
-#
-# Bash Boilerplate: https://github.com/alphabetum/bash-boilerplate
-#
-# Copyright (c) 2015 William Melody • hi@williammelody.com
-
 set -eu
 trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
 set -o pipefail
@@ -26,31 +14,45 @@ HEREDOC
 
 _setup_full() {
   _setup_terraform
-  # _setup_ansible
+  _setup_ansible
 }
 
 _setup_terraform() {
   printf "Setup Terraform resources\\n"
   printf "##############################################\\n"
-  cd "$ANSIBLE_TF_DIR"
+  cd "$TERRAFORM_DIR"
   terraform init
   terraform plan
   terraform apply -auto-approve 
   cd "$PROJECT_DIR"
 }
 
+_setup_ansible() {
+  printf "Setup infra VPS using Ansible\\n"
+  printf "##############################################\\n"
+  cd "$PROJECT_DIR/ansible"
+  ansible-galaxy install -i -r roles/requirements.yml -p roles
+  ansible-playbook playbooks/ynh_install.yml
+  cd "$PROJECT_DIR"
+}
+
+
 _destroy_infra() {
   printf "DESTROY Terraform resources\\n"
   printf "##############################################\\n"
-  cd "$PROJECT_DIR/$ANSIBLE_TF_DIR"
+  cd "$TERRAFORM_DIR"
   terraform destroy -auto-approve
 }
 
+_recreate_infra() {
+  printf "DESTROY AND REPROVISION\\n"
+  printf "##############################################\\n"
+  _destroy_infra
+  _setup_full
+}
+
 _main() {
-  # Avoid complex option parsing when only one program option is expected.
-  PROJECT_DIR=$(pwd)
-  INFRA_NAME=do_k8s_managed
-  ANSIBLE_TF_DIR=$PROJECT_DIR/terraform/$INFRA_NAME # variable used by ansible terraform inventory to find terraform/
+  source ./.env
 
 
   if [[ "${1:-}" =~ ^-h|--help$  ]]
@@ -62,12 +64,12 @@ _main() {
   elif [[ "${1:-}" =~ ^setup_ansible$  ]]
   then
     _setup_ansible
-  elif [[ "${1:-}" =~ ^setup_dockerstack$  ]]
-  then
-    _setup_dockerstack
   elif [[ "${1:-}" =~ ^destroy_infra$  ]]
   then
     _destroy_infra
+  elif [[ "${1:-}" =~ ^recreate_infra$  ]]
+  then
+    _recreate_infra
   elif [[ "${1:-}" =~ ^setup_full$  ]]
   then
     _setup_full
